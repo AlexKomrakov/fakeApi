@@ -1,0 +1,12 @@
+{
+	"route": "/test/{sn}",
+	"data":  { 
+		"text": "Hello json world!",
+		"array": [ 1, 2, 3 ],
+		"object": {
+			"field": true,
+			"randomBool": "{% randomBool %}",
+			"randomInt": "{% randomInt:0:100 %}"
+		}
+	}
+}
