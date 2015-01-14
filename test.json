@@ -2,7 +2,7 @@
 	"route": "/viewer/tasks/rest",
 	"data":  { 
 		"text": "Hello json world!",
-		"array": [ 1, 2, 3 ],
+		"array": [ 1, 2, 3, 4 ],
 		"object": {
 			"field": true,
 			"randomBool": "{% randomBool %}",
