@@ -4,11 +4,9 @@ description: >
 filesets:
     includes:
     excludes:
-        - \.git
-    depth: 3
+    depth: 2
 settings:
         targetdir: ""
         build: |
             test -d Godeps && go(){ godep go "$@";} ; go install -v
         outfiles:
-            - packer
