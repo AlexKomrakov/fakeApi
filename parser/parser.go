@@ -3,11 +3,12 @@ package parser
 import (
 	"math/rand"
 	"reflect"
-	"time"
 	"regexp"
 	"strings"
 	"strconv"
 	"fmt"
+	"encoding/binary"
+	cryptorand "crypto/rand"
 )
 
 func getFunctionsMap() map[string]interface{} {
@@ -17,8 +18,14 @@ func getFunctionsMap() map[string]interface{} {
 	}
 }
 
+func seedRandom() {
+	var seed int64
+	binary.Read(cryptorand.Reader, binary.LittleEndian, &seed)
+	rand.Seed(seed)
+}
+
 func randomBool() bool {
-	rand.Seed(time.Now().UnixNano())
+	seedRandom()
 	return rand.Intn(2) == 0
 }
 
@@ -26,7 +33,7 @@ func randomInt(max interface {}) int {
 	string, _ := max.(string) //TODO обработка ошибок
 	max_int, _ := strconv.ParseInt(string, 10, 0)
 
-	rand.Seed(time.Now().UnixNano())
+	seedRandom()
 	return rand.Intn(int(max_int))
 }
 

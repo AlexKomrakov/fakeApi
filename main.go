@@ -62,7 +62,6 @@ func jsonHandler(w http.ResponseWriter, req *http.Request, fileContent []byte) {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", defaultHandler)
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	router.HandleFunc("/exit", exitHandler)
 
 	files, _ := readDir(".")
@@ -86,6 +85,7 @@ func main() {
 		})
 	}
 
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	http.Handle("/", router)
 	http.ListenAndServe(":8080", nil)
 }

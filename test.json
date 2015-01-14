@@ -1,5 +1,5 @@
 {
-	"route": "/viewer/tasks/rest",
+	"route": "/test",
 	"data":  { 
 		"text": "Hello json world!",
 		"array": [ 1, 2, 3, 4 ],
