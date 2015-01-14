@@ -3,8 +3,10 @@ description: >
         Json api server with random data placeholders
 filesets:
     includes:
+        - parser
     excludes:
-    depth: 2
+        - \.git
+    depth: 10
 settings:
         targetdir: ""
         build: |
