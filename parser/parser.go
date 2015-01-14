@@ -7,7 +7,15 @@ import (
 	"regexp"
 	"strings"
 	"strconv"
+	"fmt"
 )
+
+func getFunctionsMap() map[string]interface{} {
+	return map[string]interface{}{
+		"{% bool %}": randomBool,
+		"{% int:[\\d]+ %}": randomInt,
+	}
+}
 
 func randomBool() bool {
 	rand.Seed(time.Now().UnixNano())
@@ -34,17 +42,33 @@ func getParameters(str string) []reflect.Value {
 	return result
 }
 
+//TODO Избавиться от дублирования с callStringFunc
 func ParseString(str string) interface {} {
-	functions := map[string]interface{}{
-		"{% randomBool %}": randomBool,
-		"{% randomInt:[\\d]+ %}": randomInt,
-	}
+	functions := getFunctionsMap()
 	for pattern, fnc := range functions {
-		matched, _ := regexp.Match(pattern, []byte(str))
+		exact := "^" + pattern + "$"
+		matched, _ := regexp.Match(exact, []byte(str))
 		if matched {
 			f := reflect.ValueOf(fnc)
 			params := getParameters(str)
 			return f.Call(params)[0].Interface()
+		}
+
+		str = regexp.MustCompile(pattern).ReplaceAllStringFunc(str, callStringFunc)
+	}
+
+	return str
+}
+
+func callStringFunc(str string) string {
+	functions := getFunctionsMap()
+	for pattern, fnc := range functions {
+		exact := "^" + pattern + "$"
+		matched, _ := regexp.Match(exact, []byte(str))
+		if matched {
+			f := reflect.ValueOf(fnc)
+			params := getParameters(str)
+			return fmt.Sprint(f.Call(params)[0].Interface())
 		}
 	}
 

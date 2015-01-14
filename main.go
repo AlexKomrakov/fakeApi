@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/alexkomrakov/fakeapi/parser"
+	"github.com/gorilla/mux"
 	"encoding/json"
-	"fmt"
-	"io"
-	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
+	"io/ioutil"
+	"io"
+	"fmt"
+	"os"
 )
 
 func readDir(path string) ([]os.FileInfo, error) {
@@ -62,6 +62,7 @@ func jsonHandler(w http.ResponseWriter, req *http.Request, fileContent []byte) {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", defaultHandler)
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	router.HandleFunc("/exit", exitHandler)
 
 	files, _ := readDir(".")

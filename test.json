@@ -5,8 +5,8 @@
 		"array": [ 1, 2, 3, 4 ],
 		"object": {
 			"field": true,
-			"randomBool": "{% randomBool %}",
-			"randomInt": "{% randomInt:15000 %}"
+			"randomBool": "Random bool: {% bool %}, random int: {% int:5 %}",
+			"randomInt": "{% int:15000 %}"
 		}
 	}
 }
