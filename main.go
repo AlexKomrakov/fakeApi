@@ -1,15 +1,15 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
+	"github.com/alexkomrakov/fakeapi/parser"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
-	"fakeapi/parser"
 )
 
 func readDir(path string) ([]os.FileInfo, error) {
