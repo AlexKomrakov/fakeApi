@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/alexkomrakov/fakeapi/lib"
 	"github.com/gorilla/mux"
 	"encoding/json"
 	"net/http"
@@ -13,8 +14,6 @@ import (
 	"log"
 	"bytes"
 	"os/exec"
-	"path"
-	"runtime"
 )
 
 var (
@@ -54,8 +53,8 @@ func exitHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func restartHandler(w http.ResponseWriter, req *http.Request) {
-	_, filename, _, _ := runtime.Caller(1)
-	command := exec.Command(path.Join(path.Dir(filename), filename))
+	command := exec.Command(os.Args[0])
+	fmt.Print(os.Args)
 	fmt.Print(command.Start())
 	os.Exit(0)
 }
@@ -63,7 +62,7 @@ func restartHandler(w http.ResponseWriter, req *http.Request) {
 func processData(data interface{}) interface {} {
 		switch dataType := data.(type) {
 	case string:
-		data = ParseString(dataType)
+		data = lib.ParseString(dataType)
 	case []interface{}:
 		for key, value := range dataType {
 			dataType[key] = processData(value)
