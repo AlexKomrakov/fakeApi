@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/alexkomrakov/fakeapi/parser"
 	"github.com/gorilla/mux"
 	"encoding/json"
 	"net/http"
@@ -10,6 +9,20 @@ import (
 	"io"
 	"fmt"
 	"os"
+	"time"
+	"log"
+	"bytes"
+	"os/exec"
+	"path"
+	"runtime"
+)
+
+var (
+	startTime  = time.Now()
+	logCont    bytes.Buffer
+	logger     = log.New(&logCont, "<br/>logger: ", log.Lshortfile)
+	requests   = 0
+	routes     = make(map[string]int)
 )
 
 func readDir(path string) ([]os.FileInfo, error) {
@@ -23,17 +36,34 @@ func readDir(path string) ([]os.FileInfo, error) {
 }
 
 func defaultHandler(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "<a href='/exit' target='_blank'>Shut down server</a><br>")
+	io.WriteString(w, "<a href='/exit' target='_blank'>Shut down server</a><br/>")
+	io.WriteString(w, "<a href='/restart' target='_blank'>Restart server</a><br/>")
+
+	io.WriteString(w, "<br/>Routes:<br/>")
+	for route := range routes {
+		io.WriteString(w, "<a href='"+route+"'>"+route+"</a><br/>")
+	}
+
+	io.WriteString(w, "<br/>Requests total: " + fmt.Sprint(requests) + "<br/>")
+
+	io.WriteString(w, fmt.Sprint(&logCont))
 }
 
 func exitHandler(w http.ResponseWriter, req *http.Request) {
 	os.Exit(0)
 }
 
+func restartHandler(w http.ResponseWriter, req *http.Request) {
+	_, filename, _, _ := runtime.Caller(1)
+	command := exec.Command(path.Join(path.Dir(filename), filename))
+	fmt.Print(command.Start())
+	os.Exit(0)
+}
+
 func processData(data interface{}) interface {} {
-	switch dataType := data.(type) {
+		switch dataType := data.(type) {
 	case string:
-		data = parser.ParseString(dataType)
+		data = ParseString(dataType)
 	case []interface{}:
 		for key, value := range dataType {
 			dataType[key] = processData(value)
@@ -47,6 +77,8 @@ func processData(data interface{}) interface {} {
 }
 
 func jsonHandler(w http.ResponseWriter, req *http.Request, fileContent []byte) {
+	requests++
+
 	var content map[string]interface{}
 	if err := json.Unmarshal(fileContent, &content); err != nil {
 		panic(err)
@@ -60,9 +92,11 @@ func jsonHandler(w http.ResponseWriter, req *http.Request, fileContent []byte) {
 }
 
 func main() {
+	logger.Println("Server started at " + startTime.String())
 	router := mux.NewRouter()
 	router.HandleFunc("/", defaultHandler)
 	router.HandleFunc("/exit", exitHandler)
+	router.HandleFunc("/restart", restartHandler)
 
 	files, _ := readDir(".")
 	for _, file := range files {
@@ -80,6 +114,7 @@ func main() {
 		}
 
 		route, _ := dat["route"].(string)
+		routes[route] = 1
 		router.HandleFunc(route, func(w http.ResponseWriter, req *http.Request) {
 			jsonHandler(w, req, []byte(fileContent))
 		})

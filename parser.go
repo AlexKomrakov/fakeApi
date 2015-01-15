@@ -1,4 +1,4 @@
-package parser
+package main
 
 import (
 	"math/rand"
