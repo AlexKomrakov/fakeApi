@@ -87,5 +87,5 @@ func main() {
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	http.Handle("/", router)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8888", nil)
 }
