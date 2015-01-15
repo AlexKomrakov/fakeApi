@@ -1,16 +1,17 @@
 {
-  "route": "/viewer/tasks/rest",
-  "data": {
-    "key": "17850_227135",
-    "group": "im",
-    "publication_url": "https://twitter.com/SobolLubov/status/484019986860900353",
-    "module_id": "2",
-    "screen_url": null,
-    "auditory": "{% int:10000 %}",
-    "publications": 1,
-    "position": 0,
-    "views": "{% int:2000 %}",
-    "best_position": 0,
-    "bot_koeff": 1
-  }
+    "route": "/viewer/tasks/rest",
+    "data": {
+        "key": "17850_227135",
+        "group": "im",
+        "publication_url": "https://twitter.com/SobolLubov/status/484019986860900353",
+        "module_id": "2",
+        "screen_url": null,
+        "auditory": "{% int:10000 %}",
+        "publications": 1,
+        "position": 0,
+        "views": "{% int:2000 %}",
+        "best_position": 0,
+        "bot_koeff": 1,
+        "state": "success"
+    }
 }
