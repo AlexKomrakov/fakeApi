@@ -1,0 +1,9 @@
+{
+    "route": "/account/twitter/rest",
+    "data": {
+        "state": "success",
+        "isBot":false
+    }
+}
+
+
