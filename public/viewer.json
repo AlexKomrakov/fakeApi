@@ -3,13 +3,13 @@
   "data": {
     "status": "Ok",
     "data": {
-      "category_id": "first_category",
-      "category_name": "first_category",
+      "category_id": "money",
+      "category_name": "Деньги",
       "auditory": "{% int:200000 %}",
       "neutral": "{% int:150000 %}",
       "positive": "{% int:100000 %}",
       "negative": "{% int:150000 %}",
-      "image": "http://viewer.ru/img/projects/temp/{% int:5 %}.png"
+      "image": "http://viewer.vm:8888/cats/{% int:5 %}.jpg"
     }
   }
 }
