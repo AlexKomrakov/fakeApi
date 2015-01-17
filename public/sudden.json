@@ -1,5 +1,5 @@
 {
-    "route": "/account/twitter/rest",
+    "route": "/account/{sn}/rest",
     "data": {
         "state": "success",
         "isBot":false
