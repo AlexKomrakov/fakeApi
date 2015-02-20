@@ -97,7 +97,7 @@ func main() {
 	router.HandleFunc("/exit", exitHandler)
 	router.HandleFunc("/restart", restartHandler)
 
-	files, _ := readDir(".")
+	files, _ := readDir("./public")
 	for _, file := range files {
 		if !strings.HasSuffix(file.Name(), ".json") {
 			continue
