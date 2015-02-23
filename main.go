@@ -97,19 +97,23 @@ func main() {
 	router.HandleFunc("/exit", exitHandler)
 	router.HandleFunc("/restart", restartHandler)
 
-	files, _ := readDir(".")
+    dir := "./public/"
+	files, _ := readDir(dir)
 	for _, file := range files {
 		if !strings.HasSuffix(file.Name(), ".json") {
 			continue
 		}
 
-		fileContent, err := ioutil.ReadFile(file.Name())
+		fileContent, err := ioutil.ReadFile(dir + file.Name())
 		if err != nil {
-			fmt.Println("Error on reading file" + file.Name() + "\n")
+            panic(err)
+			fmt.Println("Error on reading file " + file.Name() + "\n")
 		}
 		var dat map[string]interface{}
-		if err := json.Unmarshal([]byte(fileContent), &dat); err != nil {
-			panic(err)
+		err = json.Unmarshal([]byte(fileContent), &dat)
+        if err != nil {
+            fmt.Print(fileContent)
+            panic(err)
 		}
 
 		route, _ := dat["route"].(string)
