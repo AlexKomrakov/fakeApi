@@ -125,5 +125,8 @@ func main() {
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	http.Handle("/", router)
-	http.ListenAndServe(":8888", nil)
+	err := http.ListenAndServe("0.0.0.0:8888", nil)
+	if err != nil {
+		fmt.Print(err.Error())
+	}
 }
