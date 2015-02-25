@@ -14,6 +14,7 @@ import (
 	"log"
 	"bytes"
 	"os/exec"
+    "flag"
 )
 
 var (
@@ -25,13 +26,13 @@ var (
 )
 
 func readDir(path string) ([]os.FileInfo, error) {
-	dir, err := os.Open(path)
+    dir, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer dir.Close()
 
-	return dir.Readdir(-1)
+    return dir.Readdir(-1)
 }
 
 func defaultHandler(w http.ResponseWriter, req *http.Request) {
@@ -125,8 +126,15 @@ func main() {
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	http.Handle("/", router)
-	err := http.ListenAndServe("0.0.0.0:8888", nil)
+
+    var address string
+    flag.StringVar(&address, "a", ":8888", "Server address: host:port")
+    flag.Parse()
+
+    fmt.Println("Starting server on address: " + address)
+
+	err := http.ListenAndServe(address, nil)
 	if err != nil {
-		fmt.Print(err.Error())
+		fmt.Println(err.Error())
 	}
 }
