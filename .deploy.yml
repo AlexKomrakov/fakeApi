@@ -2,4 +2,4 @@ push:
   branch: refs/heads/master
   host: root@188.166.34.149:22
   commands:
-    - exec: go get -u github.com/alexkomrakov/fakeapi
+    - ssh: go get -u github.com/alexkomrakov/fakeapi
