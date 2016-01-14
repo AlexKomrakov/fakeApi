@@ -50,7 +50,7 @@
 
     <h3>Routes:</h3>
     {{ range $route, $val := .Routes }}
-    <a href='{{ $route }}' target='_blank'>{{ $route }}</a>
+    <a href='{{ $val }}' target='_blank'>{{ $route }}</a>
     <br/>
     {{ end }}
 

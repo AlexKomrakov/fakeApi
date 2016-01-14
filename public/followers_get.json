@@ -1,0 +1,8 @@
+{
+  "route": "/followers/{sn}/rest",
+  "methods": "GET",
+  "data": {
+    "state": "{% random:success,pending %}",
+    "botLevel": "{% float:1 %}"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "route": "/followers/{sn}/rest",
+  "methods": "POST",
+  "data": {
+    "state": "success"
+  }
+}

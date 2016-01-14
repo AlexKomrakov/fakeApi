@@ -15,6 +15,8 @@ func getFunctionsMap() map[string]interface{} {
 	return map[string]interface{}{
 		"{% bool %}": randomBool,
 		"{% int:[\\d]+ %}": randomInt,
+		"{% float:[\\d]+ %}": randomFloat,
+		"{% random:[^( %})]+ %}": random,
 	}
 }
 
@@ -29,12 +31,29 @@ func randomBool() bool {
 	return rand.Intn(2) == 0
 }
 
+func random(variants interface {}) string {
+	seedRandom()
+	sentence, _ := variants.(string) //TODO обработка ошибок
+	list := strings.Split(sentence, ",")
+	size := len(list)
+
+	return list[rand.Intn(size)]
+}
+
 func randomInt(max interface {}) int {
-	string, _ := max.(string) //TODO обработка ошибок
-	max_int, _ := strconv.ParseInt(string, 10, 0)
+	str, _ := max.(string) //TODO обработка ошибок
+	max_int, _ := strconv.ParseInt(str, 10, 0)
 
 	seedRandom()
 	return rand.Intn(int(max_int))
+}
+
+func randomFloat(max interface {}) float64 {
+	str, _ := max.(string) //TODO обработка ошибок
+	max_float, _ := strconv.ParseFloat(str, 64)
+
+	seedRandom()
+	return rand.Float64() * max_float
 }
 
 func getParameters(str string) []reflect.Value {

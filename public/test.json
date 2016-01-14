@@ -6,7 +6,9 @@
 		"object": {
 			"field": true,
 			"randomBool": "Random bool: {% bool %}, random int: {% int:5 %}",
-			"randomInt": "{% int:15000 %}"
+			"randomInt": "{% int:15000 %}",
+			"randomFloat": "{% float:5 %}",
+			"random": "{% random:a,b,c,d %}"
 		}
 	}
 }

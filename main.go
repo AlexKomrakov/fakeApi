@@ -31,7 +31,7 @@ var (
 	logCont    bytes.Buffer
 	logger     = log.New(&logCont, "Logger: ", log.Lshortfile)
 	requests   = 0
-	routes     = make(map[string]int)
+	routes     = make(map[string]string)
 
 	writeWait = 10 * time.Second
 	pongWait = 60 * time.Second
@@ -67,7 +67,7 @@ func readDir(path string) ([]os.FileInfo, error) {
 func defaultHandler(w http.ResponseWriter, req *http.Request) {
 	var v = struct {
 			Host string
-			Routes map[string]int
+			Routes map[string]string
 			Requests string
 			Log string
 		}{
@@ -221,11 +221,21 @@ func main() {
             panic(err)
 		}
 
-		route, _ := dat["route"].(string)
-		routes[route] = 1
-		router.HandleFunc(route, func(w http.ResponseWriter, req *http.Request) {
-			jsonHandler(w, req, []byte(fileContent))
-		})
+		route, _        := dat["route"].(string)
+		methods, result := dat["methods"].(string)
+		routes[methods + " "  + route] = route
+
+		if (result == true) {
+			methods_list := strings.Split(methods, ",")
+			router.HandleFunc(route, func(w http.ResponseWriter, req *http.Request) {
+				jsonHandler(w, req, []byte(fileContent))
+			}).Methods(methods_list...)
+		} else {
+			router.HandleFunc(route, func(w http.ResponseWriter, req *http.Request) {
+				jsonHandler(w, req, []byte(fileContent))
+			})
+		}
+
 	}
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))

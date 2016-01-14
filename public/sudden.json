@@ -2,7 +2,7 @@
     "route": "/account/{sn}/rest",
     "data": {
         "state": "success",
-        "isBot":false
+        "isBot": false
     }
 }
 
