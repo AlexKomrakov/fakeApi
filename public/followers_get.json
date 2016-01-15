@@ -2,7 +2,7 @@
   "route": "/followers/{sn}/rest",
   "methods": "GET",
   "data": {
-    "state": "success %}",
+    "state": "success",
     "botLevel": "{% float:1 %}"
   }
 }
